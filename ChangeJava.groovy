@@ -7,37 +7,12 @@ import com.beust.jcommander.JCommander
 import com.beust.jcommander.ParameterException
 
 /**
- * Insert the following into your .zshrc or whatever startup script 
- * you use for your shell. Change paths as appropriate.
- * -------------------
-
-# Quick way to switch between java 7 and java 8
-changeJava () {
-  GROOVY_PATH=~kevi9037/.sdkman/candidates/groovy/current/bin/groovy
-  SCRIPT_PATH=~kevi9037/bin/ChangeJava.groovy
-  VERSION=$1
-  JAVA_HOME_NEW=`${GROOVY_PATH} ${SCRIPT_PATH} --java-version ${VERSION} --java-home`
-  if [ "x$JAVA_HOME_NEW" != "x" ]; then
-      PATH_NEW=`${GROOVY_PATH} ${SCRIPT_PATH} --java-version ${VERSION} --path`
-      export JAVA_HOME=$JAVA_HOME_NEW
-      export PATH=$PATH_NEW
-      echo "JAVA_HOME:" $JAVA_HOME
-      java -version
-   fi
-}
-
-# Default to Java 8
-changeJava 1.8
-
+ * See README.md for details on this script including installation and
+ * usage.
  *
- * and associated ~/.changejavarc
- * -------------------
- * 1.8:/Library/Java/JavaVirtualMachines/jdk1.8.0_92.jdk/Contents/Home
- * 1.7:/Library/Java/JavaVirtualMachines/jdk1.7.0_80.jdk/Contents/Home
- *
- * This script is kind of slow and it has to be executed twice to
- * be useful (about 2-3 seconds total). It should probably be re-written in 
- * Kotlin, Ruby, Python, etc. for improved execution / startup time.
+ * TODO: This script is kind of slow and it has to be executed twice to
+ * TODO: be useful (about 2-3 seconds total). It chould probably be re-written in 
+ * TODO: Kotlin, Ruby, Python, etc. for improved execution / startup time.
  */
 class ChangeJava {
 
@@ -47,32 +22,43 @@ class ChangeJava {
     /** Map of Java version name (like '1.7') to java home dir (full path). Populated by loadVersions() */
     Map<String, String> versions = [:]
 
-    /** Configuration file. */
+    /** ChangeJava configuration file. */
     File configFile = "${System.env['HOME']}/.changejavarc" as File
 
-    /** Default java version (like '1.7'). Populated by loadVersions() */
+    /** Default java version (like '1.7'). Populated by loadVersions(). */
     String defaultVersionKey
 
+    /** If help should be displayed (how to use this script). */
     @Parameter(names = ['-h', '--help'], description = "Usage")
     boolean showHelp = false
 
+    /** The java version to switch to. */
     @Parameter(names = ['-v', '--java-version'], description = "Java version to switch to, defaults to first entry in .changejavarc")
     String javaVersion = ""
 
+    /** If the updated PATH that should be used is returned from this script. */
     @Parameter(names = ['-p', '--path'], description = "Show new PATH value.")
     boolean showPath = false
 
+    /** If the updated JAVA_HOME that should be used is returned from this script (default). */
     @Parameter(names = ["-j", "--java-home"], description = "Show new JAVA_HOME value (default)")
     boolean showJavaHome = false
 
     /** Selected javaHome. */
     String javaHome
 
+    /**
+     * Kick things off.
+     */
     public static void main(String[] args) {
         ChangeJava cj = new ChangeJava()
         cj.run(args)
     }
 
+    /**
+     * Well, really kick things off. Load the versions file, 
+     * parse the command line, output the information requested.
+     */
     void run(String[] args) {
         commandLineArgs = args
         if (!loadVersions()) {
@@ -90,6 +76,11 @@ class ChangeJava {
         }
     }
 
+    /**
+     * Figure out a new path with the specified version of java at the 
+     * FRONT of that path. Additionally, remove any java versions from within
+     * the path that might have been put in there earlier.
+     */
     void showPath() {
         LinkedList<String> pathElements = System.env['PATH'].split(':') as LinkedList
         versions.each { version, oneHomePath ->
@@ -105,6 +96,9 @@ class ChangeJava {
         println pathElements.join(':')
     }
 
+    /**
+     * Output the desired JAVA_HOME for the specified version of Java.
+     */
     void showJavaHome() {
         println javaHome
     }
