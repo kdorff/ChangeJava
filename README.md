@@ -2,7 +2,7 @@
 
 ## Introduction
 
-I frequently manager Linux servers where I must maintain multiple Java versions.
+I frequently manage Linux servers where I must maintain multiple Java versions.
 I wanted to be able to easily switch (from the command line perspective) 
 between various versions of Java. I played with "alternatives" but found it
 to be a pain. So here we are.
