@@ -6,13 +6,16 @@
 # Quick way to switch between java 7 and java 8
 changeJava () {
   #
-  # CHANGE THESE TWO
+  # CHANGE THESE
   #
-  GROOVY_PATH=~kevi9037/.sdkman/candidates/groovy/current/bin/groovy
-  SCRIPT_PATH=~kevi9037/bin/ChangeJava.groovy
-  
-  # Force some version of JAVA into JAVA_HOME and PATH so we can run groovy
+  # Location of groovy, probably within sdkman
+  GROOVY_PATH=~/.sdkman/candidates/groovy/current/bin/groovy
+  # Location of the ChangeJava.groovy script, possibly your ~/bin?
+  SCRIPT_PATH=~/bin/ChangeJava.groovy
+  # Make sure a JAVA_HOME (JDK, JRE maybe OK) exists so we can run Groovy
   JAVA_HOME=/usr/java/jdk1.8.0_101
+
+  # Force JAVA_HOME/bin to the PATH so we know we can run groovy
   PATH=${JAVA_HOME}/bin:$PATH
   VERSION=$1
   JAVA_HOME_NEW=`${GROOVY_PATH} ${SCRIPT_PATH} --java-version ${VERSION} --java-home`
