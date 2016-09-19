@@ -44,8 +44,8 @@ class ChangeJava {
     @Parameter(names = ["-j", "--java-home"], description = "Show new JAVA_HOME value (default)")
     boolean showJavaHome = false
 
-    /** Selected javaHome. */
-    String javaHome
+    /** Selected paths for selected javaHome (JDK and optionally JRE). */
+    List<String> javaHomePaths
 
     /**
      * Kick things off.
@@ -83,16 +83,20 @@ class ChangeJava {
      */
     void showPath() {
         LinkedList<String> pathElements = System.env['PATH'].split(':') as LinkedList
-        versions.each { version, oneHomePath ->
-            while (oneHomePath in pathElements) {
-                pathElements.remove oneHomePath
-            }
-            String oneHomeBinPath = "${oneHomePath}/bin"
-            while (oneHomeBinPath in pathElements) {
-                pathElements.remove oneHomeBinPath
+        versions.each { version, javaPaths ->
+            javaPaths.each { javaPath ->
+                while (javaPath in pathElements) {
+                    pathElements.remove javaPath
+                }
+                String javaBinPath = "${javaPath}/bin"
+                while (javaBinPath in pathElements) {
+                    pathElements.remove javaBinPath
+                }
             }
         }
-        pathElements.addFirst "${javaHome}/bin"
+        javaHomePaths.reverse().each { javaHomePath ->
+            pathElements.addFirst "${javaHomePath}/bin"
+        }
         println pathElements.join(':')
     }
 
@@ -100,7 +104,7 @@ class ChangeJava {
      * Output the desired JAVA_HOME for the specified version of Java.
      */
     void showJavaHome() {
-        println javaHome
+        println javaHomePaths[0]
     }
 
     /**
@@ -122,8 +126,19 @@ class ChangeJava {
             }
             return found
         }.each { line ->
-            String[] parts = line.split(/[:]/, 2)
-            versions[parts[0]] = parts[1]
+            String[] parts = line.split(/[:]/)
+            if (parts.size() >= 2) {
+                versions[parts[0]] = []
+                parts.eachWithIndex { pathElement, index ->
+                    if (index) {
+                        // Don't copy the first one (version number). Just
+                        // copy the additional path elements. Generally
+                        // the first one is the JDK and the additional is
+                        // a JRE, optionally.
+                        versions[parts[0]] << pathElement
+                    }
+                }
+            }
             if (defaultVersionKey == null) {
                 defaultVersionKey = parts[0]
             }
@@ -172,7 +187,7 @@ class ChangeJava {
             else {
                 javaVersion = versionKeys[0]
             }
-            javaHome = versions[javaVersion]
+            javaHomePaths = versions[javaVersion]
 
             return true
         } catch (ParameterException e) {
