@@ -30,7 +30,8 @@ and the path to JAVA_HOME for each. A sample ~/.changejavarc might look like:
 1.7:/usr/java/jdk1.7.0_79
 ```
 
-Pull the code from Github into a subdirectory of your home bin directory.
+Pull the ChangeJava code from Github into a directory. Here we are pulling the
+code to ```~/bin/ChangeJava```.
 
 ```
 mkdir ~/bin
@@ -38,12 +39,10 @@ cd ~/bin
 git clone git@github.com:kdorff/ChangeJava.git
 ```
 
-
 Edit your .zshrc, .bashrc, etc. to add the changeJava function to your
 environment by pre-configuring a few envionrment variables and
 importing the changeJava function by sourcing the 
 ```changeJava_bashFunction.sh``` file.
-
 
 Example content to add to your .zshrc, .bashrc:
 
@@ -69,7 +68,7 @@ changeJava 1.8
 
 Looking at the contents of the ~/.changejavarc as demonstrated above,
 if we want to use the Java that is installed to "/usr/java/jdk1.7.0_79", we
-see that has a label of "1.7" so we can execute (from the command line)
+see that has a label of "1.7" so we can execute:
 
 ```
 changeJava 1.7
