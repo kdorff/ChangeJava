@@ -74,6 +74,19 @@ see that has a label of "1.7" so we can execute:
 changeJava 1.7
 ```
 
+## Updating ChangeJava from github
+
+Assuming I don't break anything between releases, you can update ChangeJava
+with the following commands
+
+```
+cd ~/bin/ChangeJava
+git pull
+```
+
 ## Common mistakes
 
 * Make sure ChangeJava.groovy has executable permissions.
+* Verfiy you are defining the variables ```CJ_GROOVY_PATH```, 
+  ```CJ_SCRIPT_PATH```, ```CJ_JAVA_HOME``` before sourcing the script
+  file ```changeJava_bashFunction.sh```
