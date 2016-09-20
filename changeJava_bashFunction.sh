@@ -7,17 +7,17 @@
 changeJava () {
   DESIRED_VERSION=$1
 
-  if ["x${CJ_GROOVY_PATH}" == "x"]; then
+  if [ "x${CJ_GROOVY_PATH}" = "x" ]; then
     echo "Missing variable CJ_GROOVY_PATH"
     echo "This variable defines the path to the installed groovy binary"
     return
   fi
-  if ["x${CJ_SCRIPT_PATH}" == "x"]; then
+  if [ "x${CJ_SCRIPT_PATH}" = "x" ]; then
     echo "Missing variable CJ_SCRIPT_PATH"
     echo "This variable defines the path to the ChangeJava.groovy script"
     return
   fi
-  if ["x${CJ_JAVA_HOME}" == "x"]; then
+  if [ "x${CJ_JAVA_HOME}" = "x" ]; then
     echo "Missing variable CJ_JAVA_HOME"
     echo "This variable defines the path to some java home directory"
     return
