@@ -29,9 +29,20 @@ of java and the path to their home.
 1.7:/usr/java/jdk1.7.0_79
 ```
 
-Insert the contents of the file ```shell_function.sh``` into your
-.bashrc, .zshrc, or similar and modify as necessary. Part of the
-modification is to specify the locations of GROOVY_PATH and SCRIPT_PATH.
+Place the file ```changeJava_bashFunction.sh``` somewhere on your
+system, such as ~/bin. Source the shell function from within your
+.bashrc, .zshrc, or similar. Optionally call the function to specify
+your login shell's default Java.
+
+Example contents of .zshrc, .bashrc
+
+```
+# Include the changeJava bash function for quick java version changes
+. ~/bin/changeJava_bashFunction.sh
+
+# Set the default java for the shell
+changeJava 1.8
+```
 
 ## Usage
 
