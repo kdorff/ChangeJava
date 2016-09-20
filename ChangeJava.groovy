@@ -94,10 +94,26 @@ class ChangeJava {
                 }
             }
         }
-        javaHomePaths.reverse().each { javaHomePath ->
-            pathElements.addFirst "${javaHomePath}/bin"
+        javaHomePaths.reverse().eachWithindex { javaHomePath ->
+            addPath(pathElements, "${javaHomePath}/bin")
+            addPath(pathElements, "${javaHomePath}")
         }
         println pathElements.join(':')
+    }
+
+    /**
+     * Add pathToAdd to the fromt of pathElements IF pathToAdd
+     * represents a path to a directory that exists. 
+     *
+     * @param pathElements list of path elements
+     * @param pathToAdd the path to add to the front of pathElements if 
+     * pathToAdd is represents a directory path that exists.
+     */
+    public addToPath(List<String> pathElements, String pathToAdd) {
+        File pathToAddFile = pathToAdd as File
+        if (pathToAddFile.exists() && pathToAddFile.isDirectory()) {
+            pathElements.addFirst pathToAdd
+        }
     }
 
     /**
