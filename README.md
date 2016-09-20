@@ -37,6 +37,16 @@ your login shell's default Java.
 Example contents of .zshrc, .bashrc
 
 ```
+#
+# ChangeJava for quick java version changes for the current shell.
+# https://github.com/kdorff/ChangeJava
+#
+# Path to the installed groovy binary
+CJ_GROOVY_PATH=~/.sdkman/candidates/groovy/current/bin/groovy
+# Path to the ChangeJava.groovy script
+CJ_SCRIPT_PATH=~/bin/ChangeJava.groovy
+# Path to some java home directory
+CJ_JAVA_HOME=/usr/java/jdk1.8.0_101
 # Include the changeJava bash function for quick java version changes
 . ~/bin/changeJava_bashFunction.sh
 
