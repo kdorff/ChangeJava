@@ -95,8 +95,8 @@ class ChangeJava {
             }
         }
         javaHomePaths.reverse().each { javaHomePath ->
-            addPath(pathElements, "${javaHomePath}")
-            addPath(pathElements, "${javaHomePath}/bin")
+            addToPath(pathElements, "${javaHomePath}")
+            addToPath(pathElements, "${javaHomePath}/bin")
         }
         println pathElements.join(':')
     }
